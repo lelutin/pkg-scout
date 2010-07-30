@@ -20,6 +20,6 @@ $(DSC_FILE):
 .PHONY: upload-*
 upload-%: $(DSC_FILE)
 	@echo "INFO: Uploading package for $*"
-	[ "x$*" == "xunstable" -o "x$*" == "xtesting" -o "x$*" == "xstable" ] && \
+	[ "x$*" = "xunstable" -o "x$*" = "xtesting" -o "x$*" = "xstable" ] && \
 		echo "TODO: add upload method to debian" || \
 		dput $(UB_REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
