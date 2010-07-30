@@ -1,9 +1,10 @@
+UB_REPOS_URL := ppa:gabriel-filion/scout
+DEB_REPOS_URL := none-for-now
+
 PKG_V = $(shell ../../pkg-version.sh $(SOURCE_V) $(VERSION))
 PKG_ARCH = $(shell ../../pkg-arch.sh $(SOURCE_V))
 DSC_FILE = $(PROJECT)_$(VERSION)$(PKG_V).dsc
 DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
-
-REPOS_URL := ppa:gabriel-filion/scout
 
 $(DISTROS): $(DEB_FILE) $(DSC_FILE)
 
@@ -18,7 +19,7 @@ $(DSC_FILE):
 
 .PHONY: upload-*
 upload-%: $(DSC_FILE)
-	@echo "Uploading package for $*"
+	@echo "INFO: Uploading package for $*"
 	[ "x$*" == "xunstable" -o "x$*" == "xtesting" -o "x$*" == "xstable" ] && \
 		echo "TODO: add upload method to debian" || \
-		dput $(REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
+		dput $(UB_REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
