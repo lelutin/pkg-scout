@@ -40,9 +40,12 @@ clean:
 	rm -rf tmp build
 	rm -f *.tar.gz
 
-.PHONY: prep-all
-prep-all:
-	for i in $(DISTROS); do sudo DIST=$$i pbuilder update; done
+.PHONY: prep
+prep: $(patsubst %,prep-%,$(DISTROS))
+
+.PHONY: prep-*
+prep-%:
+	sudo DIST=$* pbuilder update
 
 .PHONY: upload
 upload: $(patsubst %,upload-%,$(DISTROS))

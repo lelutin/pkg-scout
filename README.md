@@ -5,9 +5,11 @@ First of all, make sure the values for the variables are right (See
 configuration section below). Then, update any file in subdirectories named
 after the distribution versions that you need to modify. Make sure to create
 all the pbuilder environments that are necessary. If they already exist on your
-computer, update them with:
+computer, update them with either "prep" for all distribution versions or
+"prep-<name>" for a specific distribution version name:
 
-    $ make prep-all
+    $ make prep
+    $ make prep-jaunty
 
 To build all packages, simply call:
 
