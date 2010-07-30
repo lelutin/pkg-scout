@@ -6,7 +6,7 @@ configuration section below). Then, update any file in subdirectories named
 after the distribution versions that you need to modify. Make sure to create
 all the pbuilder environments that are necessary. If they already exist on your
 computer, update them with either "prep" for all distribution versions or
-"prep-<name>" for a specific distribution version name:
+"prep-*name*" for a specific distribution version name:
 
     $ make prep
     $ make prep-jaunty
@@ -21,7 +21,7 @@ targets:
     $ make maverick lucid
 
 To upload packages to Launchpad, either use the "upload" target for all
-packages, or "upload-<name>" for a specific distribution version name:
+packages, or "upload-*name*" for a specific distribution version name:
 
     $ make upload
     $ make upload-karmic upload-hardy
