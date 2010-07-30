@@ -1,0 +1,18 @@
+Source: scout
+Section: python
+Priority: optional
+Maintainer: Gabriel Filion <gabriel.filion@gmx.net>
+Build-Depends: debhelper (>= 5.0.38), python-dev (>= 2.5), python-central (>= 0.5.6), cdbs (>= 0.4.49), python-setuptools, pandoc
+Standards-Version: 3.8.3
+XS-Python-Version: >= 2.5
+
+Package: scout
+Architecture: all
+Depends: ${python:Depends}, python-dbus, python-setuptools, tomboy | gnote
+XB-Python-Version: ${python:Versions}
+Description: CLI interface to Tomboy or Gnote via dbus
+ Scout is an interface to Tomboy notes or Gnote that uses dbus to
+ communicate. It presents a command-line interface and
+ tries to be as simple to use as possible. Different actions
+ can be taken to interact with Tomboy or Gnote. Actions are simple
+ to create, making the application easily extensible.

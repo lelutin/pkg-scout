@@ -1,0 +1,24 @@
+PKG_V = $(shell ../../pkg-version.sh $(SOURCE_V) $(VERSION))
+PKG_ARCH = $(shell ../../pkg-arch.sh $(SOURCE_V))
+DSC_FILE = $(PROJECT)_$(VERSION)$(PKG_V).dsc
+DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
+
+REPOS_URL := ppa:gabriel-filion/scout
+
+$(DISTROS): $(DEB_FILE) $(DSC_FILE)
+
+$(DEB_FILE): $(DSC_FILE)
+	@echo "INFO: Building package file for $(DISTRO)"
+	sudo DIST=$(DISTRO) pbuilder build $(DSC_FILE)
+	cp /var/cache/pbuilder/$(DISTRO)-i386/result/$(DEB_FILE) .
+
+$(DSC_FILE):
+	@echo "INFO: Building .dsc file for $(DISTRO)"
+	cd $(SOURCE_V) && debuild -S -sa
+
+.PHONY: upload-*
+upload-%: $(DSC_FILE)
+	@echo "Uploading package for $*"
+	[ "x$*" == "xunstable" -o "x$*" == "xtesting" -o "x$*" == "xstable" ] && \
+		echo "TODO: add upload method to debian" || \
+		dput $(REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
