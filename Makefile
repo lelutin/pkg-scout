@@ -38,7 +38,11 @@ $(ARCHV):
 .PHONY: clean
 clean:
 	rm -rf tmp build
-	rm -f *.tar.gz
+	rm -f $(LATEST_ARCHIVE)
+
+.PHONY: clean-all
+clean-all: clean
+	rm -f $(ARCHV)
 
 .PHONY: prep
 prep: $(patsubst %,prep-%,$(DISTROS))
