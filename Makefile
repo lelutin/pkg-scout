@@ -7,20 +7,37 @@ VERSION := $(patsubst v%.tar.gz,%,$(LATEST_ARCHIVE))
 SOURCE_V := $(PROJECT)-$(VERSION)
 ARCHV := $(subst -,_,$(SOURCE_V)).orig.tar.gz
 
-export DISTROS PROJECT VERSION SOURCE_V
-
 .PHONY: all
 all: $(DISTROS)
 
 .PHONY: $(DISTROS)
 .SECONDEXPANSION:
-$(DISTROS): build/$$@/$(SOURCE_V)/debian/changelog build/$$@/Makefile
-	DISTRO=$@ $(MAKE) -C build/$@
+$(DISTROS): dev-$$@
+	$(MAKE) -C build/$@
+
+.PHONY: dev-*
+dev-%: build/$$*/Makefile build/_PROJECT_ build/_VERSION_ build/_SOURCE_V_ \
+	build/$$*/$(SOURCE_V)/debian/changelog
+	
 
 .PRECIOUS: build/%/Makefile
 build/%/Makefile: Makefile.stage2
 	mkdir -p build/$*
 	cp -f Makefile.stage2 build/$*/Makefile
+
+# Static variable passing renders the Makefile.stage2 autonomous
+.PRECIOUS: build/_PROJECT_ build/_VERSION_ build/_SOURCE_V_
+build/_PROJECT_:
+	mkdir -p build
+	echo $(PROJECT) > $@
+
+build/_VERSION_:
+	mkdir -p build
+	echo $(VERSION) > $@
+
+build/_SOURCE_V_:
+	mkdir -p build
+	echo $(SOURCE_V) > $@
 
 .PRECIOUS: build/%/$(SOURCE_V)/debian/changelog
 build/%/$(SOURCE_V)/debian/changelog: $$*/changelog $(ARCHV)
@@ -59,4 +76,4 @@ upload: $(patsubst %,upload-%,$(DISTROS))
 
 .PHONY: upload-*
 upload-%: build/$$*/Makefile
-	$(MAKE) -C build/$* upload-$*
+	$(MAKE) -C build/$* upload

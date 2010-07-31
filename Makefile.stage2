@@ -1,17 +1,29 @@
 UB_REPOS_URL := ppa:gabriel-filion/scout
 DEB_REPOS_URL := none-for-now
 
+PROJECT := $(shell cat ../_PROJECT_)
+VERSION := $(shell cat ../_VERSION_)
+SOURCE_V := $(shell cat ../_SOURCE_V_)
+
+DISTRO := $(shell basename $$(pwd))
+
 PKG_V = $(shell ../../pkg-version.sh $(SOURCE_V) $(VERSION))
 PKG_ARCH = $(shell ../../pkg-arch.sh $(SOURCE_V))
 DSC_FILE = $(PROJECT)_$(VERSION)$(PKG_V).dsc
 DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
 
 .PHONY: all
-all: $(DEB_FILE) $(DSC_FILE)
+all: deb dsc
+
+.PHONY: deb
+deb: $(DEB_FILE)
+
+.PHONY: dsc
+dsc: $(DSC_FILE)
 
 .PRECIOUS: $(DSC_FILE) $(DEB_FILE)
 $(DEB_FILE): $(DSC_FILE)
-	@echo "INFO: Building package file for $(DISTRO)"
+	@echo "INFO: Building .deb package file for $(DISTRO)"
 	sudo DIST=$(DISTRO) pbuilder build $(DSC_FILE)
 	cp /var/cache/pbuilder/$(DISTRO)-i386/result/$(DEB_FILE) .
 
@@ -19,9 +31,13 @@ $(DSC_FILE):
 	@echo "INFO: Building .dsc file for $(DISTRO)"
 	cd $(SOURCE_V) && debuild -S -sa
 
-.PHONY: upload-*
-upload-%: $(DSC_FILE)
-	@echo "INFO: Uploading package for $*"
-	[ "x$*" = "xunstable" -o "x$*" = "xtesting" -o "x$*" = "xstable" ] && \
+.PHONY: upload
+upload: $(DSC_FILE)
+	@echo "INFO: Uploading package for $(DISTRO)"
+	[ "x$(DISTRO)" = "xunstable" -o "x$(DISTRO)" = "xtesting" -o "x$(DISTRO)" = "xstable" ] && \
 		echo "TODO: add upload method to debian" || \
 		dput $(UB_REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
+
+.PHONY: clean
+clean:
+	rm -f $(DSC_FILE) $(DEB_FILE) *.changes *.diff.gz *.build *.tar.gz

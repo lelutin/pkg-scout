@@ -26,8 +26,34 @@ packages, or "upload-*name*" for a specific distribution version name:
     $ make upload
     $ make upload-karmic upload-hardy
 
-To remove all built files and residues, use:
+To remove all built files and residues, use the following in the top directory:
 
+    $ make clean
+
+When developing
+---------------
+
+When working on modifications for the packaging, it is useful to have a work
+copy set up. To assemble the *source* + *debian* directories under the
+build/*distro_version* directory, Use the dev-*name* target (where *name* is
+the name of the distribution version you'll be working on):
+
+    $ make dev-testing
+
+You can then 'cd' to the build/*distro_version* directory (in this example,
+build/testing) and hack away your modifications.
+
+While working in this directory, you can use the Makefile that is automatically
+copied by the dev-*distro_version* target. To build the .dsc + .changes files,
+use the 'dsc' target and to build the .deb package, use the 'deb' target. To
+build them all, use the default target ('all'). To upload the currently built
+package, use the 'upload' target. Finally, to remove files that were created by
+the build process, use the 'clean' target:
+
+    $ make
+    $ make dsc
+    $ make deb
+    $ make upload
     $ make clean
 
 Configuration
