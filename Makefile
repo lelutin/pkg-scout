@@ -17,9 +17,12 @@ all: $(DISTROS)
 $(DISTROS): build/$$@/$(SOURCE_V)/debian/changelog build/$$@/Makefile
 	DISTRO=$@ $(MAKE) -C build/$@
 
+.PRECIOUS: build/%/Makefile
 build/%/Makefile: Makefile.stage2
+	mkdir -p build/$*
 	cp -f Makefile.stage2 build/$*/Makefile
 
+.PRECIOUS: build/%/$(SOURCE_V)/debian/changelog
 build/%/$(SOURCE_V)/debian/changelog: $$*/changelog $(ARCHV)
 	mkdir -p build/$*
 	cd build/$* && tar -xf ../../$(ARCHV)

@@ -9,6 +9,7 @@ DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
 .PHONY: all
 all: $(DEB_FILE) $(DSC_FILE)
 
+.PRECIOUS: $(DSC_FILE) $(DEB_FILE)
 $(DEB_FILE): $(DSC_FILE)
 	@echo "INFO: Building package file for $(DISTRO)"
 	sudo DIST=$(DISTRO) pbuilder build $(DSC_FILE)
