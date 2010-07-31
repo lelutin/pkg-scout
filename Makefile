@@ -1,5 +1,5 @@
-#DISTROS := unstable testing stable maverick lucid karmic jaunty intrepid hardy
-DISTROS := maverick lucid karmic jaunty intrepid hardy
+#DISTROS := unstable testing stable maverick lucid karmic jaunty hardy
+DISTROS := maverick lucid karmic jaunty hardy
 PROJECT := scout
 
 LATEST_ARCHIVE:=$(shell ./find-latest-archive.sh)
