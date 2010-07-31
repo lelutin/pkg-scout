@@ -15,7 +15,7 @@ all: $(DISTROS)
 .PHONY: $(DISTROS)
 .SECONDEXPANSION:
 $(DISTROS): build/$$@/$(SOURCE_V)/debian/changelog build/$$@/Makefile
-	DISTRO=$@ $(MAKE) -C build/$@ $@
+	DISTRO=$@ $(MAKE) -C build/$@
 
 build/%/Makefile: Makefile.stage2
 	cp -f Makefile.stage2 build/$*/Makefile

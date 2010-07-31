@@ -6,7 +6,8 @@ PKG_ARCH = $(shell ../../pkg-arch.sh $(SOURCE_V))
 DSC_FILE = $(PROJECT)_$(VERSION)$(PKG_V).dsc
 DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
 
-$(DISTROS): $(DEB_FILE) $(DSC_FILE)
+.PHONY: all
+all: $(DEB_FILE) $(DSC_FILE)
 
 $(DEB_FILE): $(DSC_FILE)
 	@echo "INFO: Building package file for $(DISTRO)"
