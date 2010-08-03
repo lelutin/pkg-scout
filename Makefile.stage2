@@ -41,3 +41,7 @@ upload: $(DSC_FILE)
 .PHONY: clean
 clean:
 	rm -f $(DSC_FILE) $(DEB_FILE) *.changes *.diff.gz *.build *.tar.gz
+
+.PHONY: apply
+apply:
+	$(MAKE) -C ../../ apply-$(DISTRO)

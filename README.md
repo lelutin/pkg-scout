@@ -56,6 +56,21 @@ the build process, use the 'clean' target:
     $ make upload
     $ make clean
 
+One last target that you can use when working in the build/*distro_version*
+directory, is the 'apply' target. This target copies all changes made to files
+inside the *debian*/ directory in the dev environment to the topmost
+*distro_version*/ directory:
+
+    $ make dev-testing
+    $ cd build/testing/scout-0.3.2/debian
+    $ <hack, slash and burn>  # and test out your modifications ;)
+    $ cd .. && dch -i
+    $ cd .. && make apply
+
+Using this last feature is dangerous for your files -- it overwrites your files
+inside *distro_version*/ -- so if you want to use this, make sure to have
+everything under a versioning system.
+
 Configuration
 =============
 

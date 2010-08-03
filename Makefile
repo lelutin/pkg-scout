@@ -77,3 +77,9 @@ upload: $(patsubst %,upload-%,$(DISTROS))
 .PHONY: upload-*
 upload-%: build/$$*/Makefile
 	$(MAKE) -C build/$* upload
+
+.PHONY: apply-*
+apply-%:
+	@[ -d "build/$*/$(PROJECT)-$(VERSION)/debian" ] || (echo "ERROR: build/$*/$(PROJECT)-$(VERSION)/debian directory not present. nothing to apply." && exit 1)
+	cp -r build/$*/$(PROJECT)-$(VERSION)/debian/* $*/
+	for i in common/*; do j=$$(basename $$i); if `diff -qbur $$i $*/$$j`; then rm $*/$$j; fi; done
