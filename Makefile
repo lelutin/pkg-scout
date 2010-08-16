@@ -16,8 +16,8 @@ $(DISTROS): dev-$$@
 	$(MAKE) -C build/$@
 
 .PHONY: dev-*
-dev-%: build/$$*/Makefile build/_PROJECT_ build/_VERSION_ build/_SOURCE_V_ \
-	build/$$*/$(SOURCE_V)/debian/changelog
+dev-%: build/%/Makefile build/_PROJECT_ build/_VERSION_ build/_SOURCE_V_ \
+	build/%/$(SOURCE_V)/debian/changelog
 	
 
 .PRECIOUS: build/%/Makefile
@@ -40,7 +40,7 @@ build/_SOURCE_V_:
 	echo $(SOURCE_V) > $@
 
 .PRECIOUS: build/%/$(SOURCE_V)/debian/changelog
-build/%/$(SOURCE_V)/debian/changelog: $$*/changelog $(ARCHV)
+build/%/$(SOURCE_V)/debian/changelog: %/changelog $(ARCHV)
 	mkdir -p build/$*
 	cd build/$* && tar -xf ../../$(ARCHV)
 	mkdir -p build/$*/$(SOURCE_V)/debian
@@ -75,7 +75,7 @@ prep-%:
 upload: $(patsubst %,upload-%,$(DISTROS))
 
 .PHONY: upload-*
-upload-%: build/$$*/Makefile
+upload-%: build/%/Makefile
 	$(MAKE) -C build/$* upload
 
 .PHONY: apply-*
