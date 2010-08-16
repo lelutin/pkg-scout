@@ -55,26 +55,23 @@ $(ARCHV):
 	mv tmp/* tmp/$(SOURCE_V)
 	cd tmp && tar czf ../$(ARCHV) $(SOURCE_V)
 
-.PHONY: clean
+.PHONY: clean clean-all
 clean:
 	rm -rf tmp build
 	rm -f $(LATEST_ARCHIVE)
 
-.PHONY: clean-all
 clean-all: clean
 	rm -f $(ARCHV)
 
-.PHONY: prep
+.PHONY: prep prep-*
 prep: $(patsubst %,prep-%,$(DISTROS))
 
-.PHONY: prep-*
 prep-%:
 	sudo DIST=$* pbuilder update
 
-.PHONY: upload
+.PHONY: upload upload-*
 upload: $(patsubst %,upload-%,$(DISTROS))
 
-.PHONY: upload-*
 upload-%: build/%/Makefile
 	$(MAKE) -C build/$* upload
 

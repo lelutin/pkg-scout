@@ -12,13 +12,11 @@ PKG_ARCH = $(shell ../../pkg-arch.sh $(SOURCE_V))
 DSC_FILE = $(PROJECT)_$(VERSION)$(PKG_V).dsc
 DEB_FILE = $(PROJECT)_$(VERSION)$(PKG_V)_$(PKG_ARCH).deb
 
-.PHONY: all
+.PHONY: all deb dsc upload clean apply
 all: deb dsc
 
-.PHONY: deb
 deb: $(DEB_FILE)
 
-.PHONY: dsc
 dsc: $(DSC_FILE)
 
 .PRECIOUS: $(DSC_FILE) $(DEB_FILE)
@@ -31,17 +29,14 @@ $(DSC_FILE):
 	@echo "INFO: Building .dsc file for $(DISTRO)"
 	cd $(SOURCE_V) && debuild -S -sa
 
-.PHONY: upload
 upload: $(DSC_FILE)
 	@echo "INFO: Uploading package for $(DISTRO)"
 	[ "x$(DISTRO)" = "xunstable" -o "x$(DISTRO)" = "xtesting" -o "x$(DISTRO)" = "xstable" ] && \
 		echo "TODO: add upload method to debian" || \
 		dput $(UB_REPOS_URL) $(DSC_FILE:.dsc=_source.changes)
 
-.PHONY: clean
 clean:
 	rm -f $(DSC_FILE) $(DEB_FILE) *.changes *.diff.gz *.build *.tar.gz
 
-.PHONY: apply
 apply:
 	$(MAKE) -C ../../ apply-$(DISTRO)
